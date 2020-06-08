@@ -3,8 +3,6 @@
  */
 package protobuf.serializable;
 
-import static org.junit.Assert.assertArrayEquals;
-
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -81,7 +79,6 @@ public class ProtobufTest {
       GpsDataProto.gps_data.Builder builder =
           GpsDataProto.gps_data.newBuilder();
 
-          char c=(char)-17;
       builder.setAltitude(1);
       builder.setDataTime("2017-12-17 16:21:44");
       builder.setGpsStatus(1);
@@ -94,8 +91,15 @@ public class ProtobufTest {
 
       ByteArrayInputStream input = new ByteArrayInputStream(data.toByteArray());
       ProtobufInput protobufInput = new ProtobufInput(input);
+      GpsData read = protobufInput.readClass(GpsData.class);
+      protobufInput.close();
 
-      GpsData readClass = protobufInput.readClass(GpsData.class);
-      System.out.println(readClass);
+      Assert.assertEquals(data.getAltitude(), read.getAltitude());
+      Assert.assertEquals(data.getDataTime(), read.getDataTime());
+      Assert.assertEquals(data.getGpsStatus(), read.getGpsStatus());
+      Assert.assertTrue(data.getLat() == read.getLat());
+      Assert.assertTrue(data.getLon()== read.getLon());
+      Assert.assertTrue(data.getDirection() == read.getDirection());
+      Assert.assertTrue(data.getId()== read.getId());
     }
 }
