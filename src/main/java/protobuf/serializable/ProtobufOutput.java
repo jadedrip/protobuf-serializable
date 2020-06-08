@@ -123,7 +123,7 @@ public class ProtobufOutput implements AutoCloseable {
     }
 
     private void writeDouble(Double v) throws IOException {
-        Long bits = Double.doubleToLongBits(v);
+        Long bits = Double.doubleToRawLongBits(v);
         outputStream.write((int) (bits & 0xFF));
         outputStream.write((int) ((bits >>> 8) & 0xFF));
         outputStream.write((int) ((bits >>> 16) & 0xFF));

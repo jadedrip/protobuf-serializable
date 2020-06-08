@@ -13,6 +13,10 @@ import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
 
+import com.test.GpsData;
+import com.test.GpsDataProto;
+import com.test.GpsDataProto.gps_data;
+
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -69,6 +73,29 @@ public class ProtobufTest {
         Assert.assertArrayEquals(my.stringList.toArray(), you.stringList.toArray());
 
         protobufInput.close();
+    }
 
+    @Test
+    public void jprobuf()
+        throws InstantiationException, IllegalAccessException, IOException {
+      GpsDataProto.gps_data.Builder builder =
+          GpsDataProto.gps_data.newBuilder();
+
+          char c=(char)-17;
+      builder.setAltitude(1);
+      builder.setDataTime("2017-12-17 16:21:44");
+      builder.setGpsStatus(1);
+      builder.setLat(39.123);
+      builder.setLon(120.112);
+      builder.setDirection(30.2F);
+      builder.setId(100L);
+
+      gps_data data = builder.build();
+
+      ByteArrayInputStream input = new ByteArrayInputStream(data.toByteArray());
+      ProtobufInput protobufInput = new ProtobufInput(input);
+
+      GpsData readClass = protobufInput.readClass(GpsData.class);
+      System.out.println(readClass);
     }
 }
